@@ -21,11 +21,13 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-    const  { nombre, apellido, telefono, email, password } = req.body;
+
+    let  { nombre, apellido, telefono, email, password, avatar } = req.body;
     try {
         let user = await User.findOne({ email });
         if (user) throw({ code: 11000 });
-        user = new User({ nombre, apellido, telefono, email, password });
+        let urlImg = `http://localhost:8080/public/uploads/${req.file.originalname}`
+        user = new User({ nombre, apellido, telefono, email, password, avatar: urlImg });
         await user.save();
         return res.status(201).json({ ok: true });
     } catch (error) {
@@ -44,7 +46,6 @@ export const refreshToken = (req, res) => {
         console.log(error);
         return res.status(500).json({ error: "Error del servidor 💻"});
     }
-
 };
 
 export const logout = (req, res) => {
