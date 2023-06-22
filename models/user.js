@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
-    nombre:{
+    /* nombre:{
         type: String,
         trim: true,
         required: true,
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
         type: Number,
         trim: true,
         required: true,
-    },
+    }, */
     email:{
         type: String,
         required: true,
@@ -28,11 +28,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    avatar: {
+    /* avatar: {
         type: String,
         required: true
     },
-    
+     */
 },
 {
     timestamps:true

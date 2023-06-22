@@ -22,13 +22,13 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
 
-    let  { nombre, apellido, telefono, email, password, avatar } = req.body;
+    const  { /* nombre, apellido, telefono, */ email, password, /* avatar  */} = req.body;
     try {
         let user = await User.findOne({ email });
         if (user) throw({ code: 11000 });
-        let urlImg = `http://localhost:8080/public/uploads/${req.file.originalname}`
-        user = new User({ nombre, apellido, telefono, email, password, avatar: urlImg });
-        await user.save();
+        /* let urlImg = `http://localhost:8080/public/uploads/${req.file.originalname}` */
+        user = new User({/*  nombre, apellido, telefono,*/ email, password/* , avatar: urlImg  */});
+        const response = await user.save();
         return res.status(201).json({ ok: true });
     } catch (error) {
         if (error.code === 11000) {
@@ -54,5 +54,11 @@ export const logout = (req, res) => {
 };
 
 export const infoUser = async (req, res) => {
-    res.json({ user: "correo@correo.com" })
+    try {
+        const id = req.uid
+        const user = await User.findById(id).lean()
+        res.json({ email: user.email, uid: user._id })
+    } catch (error) {
+        return res.status(500).json({error: "error del servidor ❌"})
+    }
 }
