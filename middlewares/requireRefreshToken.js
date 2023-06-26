@@ -1,6 +1,7 @@
-import { tokenVerificationErrors } from "../utils/tokenManager";
+import { tokenVerificationErrors } from "../utils/tokenManager.js";
+import jwt from "jsonwebtoken"
 
-export const requreRefreshToken = (req, res, next) => {
+export const requireRefreshToken = (req, res, next) => {
     try {
         const refreshTokenCookie = req.cookies.refreshToken
         if (!refreshTokenCookie) throw new Error("No existe el token ❌");

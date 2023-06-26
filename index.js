@@ -2,7 +2,8 @@ import express from "express";
 import "dotenv/config";
 import "./database/connectDB.js";
 import authRouter from "./routes/auth.routes.js";
-import profileRouter from "./routes/profile.routes.js"
+import profileRouter from "./routes/profile.routes.js";
+import publicacionRouter from "./routes/publicacion.routes.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/v1/auth", authRouter);
 app.use("/", profileRouter);
+app.use("/publicaciones", publicacionRouter);
 app.use(express.static("public"));
 
 /* establecemos la configuracion del almacenamiento de las imagenes */

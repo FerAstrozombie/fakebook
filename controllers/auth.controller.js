@@ -1,5 +1,5 @@
 import { User } from "../models/user.js";
-import { generadorToken, generateRefreshToken, tokenVerificationErrors } from "../utils/tokenManager.js";
+import { generadorToken, generateRefreshToken } from "../utils/tokenManager.js";
 
 export const login = async (req, res) => {
     const  { email, password } = req.body;
@@ -12,7 +12,7 @@ export const login = async (req, res) => {
 
         //Genero el JWT
         const { token, expiresIn } = generadorToken(user._id);
-        generateRefreshToken(user._id, res)
+        generateRefreshToken(user._id, res);
         res.json({ token, expiresIn });
     } catch (error) {
         console.log(error);
@@ -28,8 +28,13 @@ export const register = async (req, res) => {
         if (user) throw({ code: 11000 });
         /* let urlImg = `http://localhost:8080/public/uploads/${req.file.originalname}` */
         user = new User({/*  nombre, apellido, telefono,*/ email, password/* , avatar: urlImg  */});
-        const response = await user.save();
-        return res.status(201).json({ ok: true });
+        await user.save();
+
+        //Genero el JWT
+        const { token, expiresIn } = generadorToken(user._id);
+        generateRefreshToken(user._id, res);
+        
+        return res.status(201).json({ token, expiresIn });
     } catch (error) {
         if (error.code === 11000) {
             return res.status(400).json({ error: "Ya existe el usuario 😐" });

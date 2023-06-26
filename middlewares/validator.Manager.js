@@ -13,17 +13,17 @@ export const validatorExpress = (req, res, next) => {
 
 export const bodyRegisterValidator = [
 
-    body("email", "Formato de email incorrecto")
+    body("email", "Formato de email incorrecto 📩")
         .trim()
         .isEmail()
         .normalizeEmail(),
-    body("password", "Minimo 6 caracteres")
+    body("password", "Minimo 6 caracteres ❌")
         .trim()
         .isLength({ min: 6 }),
-    body("password", "Formato de password incorrecto")
+    body("password", "Formato de password incorrecto ❌")
         .custom((value, { req }) => {
             if (value !== req.body.repassword) {
-                throw new Error("No coinciden las contraseñas")
+                throw new Error("No coinciden las contraseñas ❌")
             }
             return value;
     }),
