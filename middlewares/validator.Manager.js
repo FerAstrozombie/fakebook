@@ -1,4 +1,4 @@
-import { validationResult, body } from "express-validator";
+import { validationResult, body, param } from "express-validator";
 
 export const validatorExpress = (req, res, next) => {
 
@@ -42,4 +42,12 @@ export const bodyLoginValidator = [
         .isLength({ min: 6 }),
     validatorExpress
 
+]
+
+export const paramIdValidator = [
+    param("id", "Formato no valido ❌")
+    .trim()
+    .notEmpty()
+    .escape()
+    ,validatorExpress
 ]
