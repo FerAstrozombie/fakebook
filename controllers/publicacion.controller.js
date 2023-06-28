@@ -50,7 +50,7 @@ export const removePublicacionById = async (req, res) => {
 
         if(!publicacion.uid.equals(req.uid)) return res.status(401).json({ error: "Publicacion de otro usuario ❌"});
 
-        publicacion.deleteOne();
+        await publicacion.deleteOne();
         return res.json({ publicacion });
     } catch (error) {
         if(error.kind === "ObjectId"){
@@ -58,4 +58,27 @@ export const removePublicacionById = async (req, res) => {
         }
         return res.status(500).json({ error: "error del servidor 💻" })
     }
-}
+};
+
+export const updatePublicacion = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { posteo } = req.body;
+
+        const publicacion = await Publicacion.findById(id);
+
+        if(!publicacion) return res.status(404).json({ error: "No existe el posteo 📄"});
+
+        if(!publicacion.uid.equals(req.uid)) return res.status(401).json({ error: "Publicacion de otro usuario ❌"});
+
+        publicacion.posteo = posteo;
+        await publicacion.save();
+
+        return res.json({ publicacion });
+    } catch (error) {
+        if(error.kind === "ObjectId"){
+            return res.status(403).json({ error: "Formato de id incorrecto 🆔" });
+        }
+        return res.status(500).json({ error: "error del servidor 💻" })
+    }
+};
