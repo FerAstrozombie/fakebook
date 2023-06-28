@@ -6,8 +6,19 @@ import profileRouter from "./routes/profile.routes.js";
 import publicacionRouter from "./routes/publicacion.routes.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
+import cors from "cors";
 
 const app = express();
+
+const whiteList = [process.env.ORIGIN1];
+app.use(cors({
+    origin: function(origin, callback){
+        if(whiteList.includes(origin)){
+            return callback(null, origin);
+        }
+        return callback("Error de CORS: " + origin + " No autorizado!❌");
+    }
+}));
 
 app.use(express.json());
 app.use(cookieParser());
