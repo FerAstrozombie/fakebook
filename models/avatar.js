@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
-const publicacionesSchema = new mongoose.Schema({
-    posteo: {
+const avatarSchema = new mongoose.Schema({
+    avatar: {
         type: String,
         required: true,
     },
@@ -20,4 +20,4 @@ const publicacionesSchema = new mongoose.Schema({
 }
 );
 
-export const Publicacion = mongoose.model("Publicaciones", publicacionesSchema);
+export const Avatar = mongoose.model("Avatares", avatarSchema);

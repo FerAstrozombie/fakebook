@@ -22,12 +22,13 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
 
-    const  { /* nombre, apellido, telefono, */ email, password, /* avatar  */} = req.body;
+    const  { nombre, apellido, telefono, email, password } = req.body;
     try {
         let user = await User.findOne({ email });
         if (user) throw({ code: 11000 });
-        /* let urlImg = `http://localhost:8080/public/uploads/${req.file.originalname}` */
-        user = new User({/*  nombre, apellido, telefono,*/ email, password/* , avatar: urlImg  */});
+        /* let urlImg = `http://localhost:8080/public/uploads/${req.file.originalname}`;
+        avatar = urlImg */
+        user = new User({nombre, apellido, telefono, email, password });
         await user.save();
 
         //Genero el JWT
@@ -55,14 +56,20 @@ export const refreshToken = (req, res) => {
 
 export const logout = (req, res) => {
     res.clearCookie("refreshToken");
-    res.json({ ok: true });
+    res.status(200).json({ mensaje: "Cookie eliminada con exito"});
 };
 
 export const infoUser = async (req, res) => {
     try {
         const id = req.uid
-        const user = await User.findById(id).lean()
-        res.json({ email: user.email, uid: user._id })
+        const user = await User.findById(id).lean();
+        const userFind = {
+            nombre: user.nombre,
+            apellido: user.apellido,
+            telefono: user.telefono,
+            email: user.email,
+        }
+        res.json({ user: userFind })
     } catch (error) {
         return res.status(500).json({error: "error del servidor ❌"})
     }

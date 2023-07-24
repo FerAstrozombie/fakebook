@@ -14,6 +14,8 @@ router.get("logout", logout);
 
 router.get("/protected",requireToken, infoUser);
 
+router.get("/profile", requireToken, infoUser);
+
 router.get("/refresh", requireRefreshToken, refreshToken);
 
 router.get("/logout", logout);

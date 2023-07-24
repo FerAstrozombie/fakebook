@@ -10,17 +10,22 @@ import cors from "cors";
 
 const app = express();
 
-const whiteList = [process.env.ORIGIN1];
+const whiteList = [ process.env.ORIGIN1]
 app.use(cors({
-    origin: function(origin, callback){
-        if(whiteList.includes(origin)){
+    origin: function (origin, callback) {
+        console.log("😯😯😯 =>", origin);
+        if(!origin || whiteList.includes(origin)){
             return callback(null, origin);
         }
-        return callback("Error de CORS: " + origin + " No autorizado!❌");
-    }
+        return callback(
+            "Error de CORS oridgin" + origin + " No autorizado!"
+        )
+    },
+    credentials: true,
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use("/api/v1/auth", authRouter);
 app.use("/", profileRouter);

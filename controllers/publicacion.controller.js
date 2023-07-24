@@ -1,9 +1,9 @@
-import { isValidObjectId } from "mongoose";
 import { Publicacion } from "../models/publicaciones.js";
+import { User } from "../models/user.js";
 
 export const getPublications = async (req, res) => {
     try {
-        const publicaciones = await Publicacion.find({ uid: req.uid });
+        const publicaciones = await Publicacion.find();
         return res.json({ publicaciones });
     } catch (error) {
         console.log(error);
@@ -31,10 +31,13 @@ export const getPublicacionById = async (req, res) => {
 
 export const createPublications = async (req, res) => {
     try {
+        const id = req.uid;
+        const userFind = await User.findById(id).lean();
+        const user = userFind.nombre + " " + userFind.apellido;
         const { posteo } = req.body;
-
-        const post = new Publicacion({ posteo, uid: req.uid });
+        const post = new Publicacion({ posteo, uid: req.uid, user });
         const newPost = await post.save();
+        console.log(newPost);
         return res.status(201).json({ newPost });
     } catch (error) {
         return res.status(500).json({ error: "error del servidor 💻" })
